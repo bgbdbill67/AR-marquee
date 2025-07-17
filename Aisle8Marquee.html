@@ -1,43 +1,15 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>AR Marquee - Aisle 8 Neon</title>
+    <title>AR Test</title>
     <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
     <script src="https://cdn.rawgit.com/jeromeetienne/AR.js/2.2.1/aframe/build/aframe-ar.js"></script>
-    <style>
-      body { margin: 0; overflow: hidden; }
-    </style>
+    <style>body { margin: 0; overflow: hidden; }</style>
   </head>
   <body>
     <a-scene embedded arjs="sourceType: webcam; debugUIEnabled: false;">
       <a-marker preset="hiro">
-
-        <!-- AISLE HEADER with glow -->
-        <a-entity 
-          text="value: AISLE 8; align: center; color: #00f; width: 6; shader: msdf;" 
-          position="0 0.6 0" 
-          material="color: #00f; emissive: #00f; emissiveIntensity: 2;">
-        </a-entity>
-
-        <!-- List items with glow -->
-        <a-entity 
-          text="value: 1. Primers; align: center; color: #0ff; width: 5; shader: msdf;" 
-          position="0 0.3 0" 
-          material="color: #0ff; emissive: #0ff; emissiveIntensity: 2;">
-        </a-entity>
-
-        <a-entity 
-          text="value: 2. Interior Paints; align: center; color: #0ff; width: 5; shader: msdf;" 
-          position="0 0.1 0" 
-          material="color: #0ff; emissive: #0ff; emissiveIntensity: 2;">
-        </a-entity>
-
-        <a-entity 
-          text="value: 3. Exterior Paints; align: center; color: #0ff; width: 5; shader: msdf;" 
-          position="0 -0.1 0" 
-          material="color: #0ff; emissive: #0ff; emissiveIntensity: 2;">
-        </a-entity>
-
+        <a-entity text="value: TEST; align: center; color: red; width: 10; shader: msdf;" position="0 0 0"></a-entity>
       </a-marker>
       <a-entity camera></a-entity>
     </a-scene>
