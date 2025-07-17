@@ -6,20 +6,37 @@
   <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
   <style>
     body { margin: 0; overflow: hidden; }
+    #startBtn {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      padding: 15px 25px;
+      background: #0075CE;
+      color: #F6CF3F;
+      font-size: 1.2em;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      z-index: 999;
+    }
   </style>
 </head>
 <body>
+  <button id="startBtn">Start AR Experience</button>
+  
   <a-scene
     embedded
     vr-mode-ui="enabled: false"
     renderer="antialias: true;"
     device-orientation-permission-ui="enabled: true"
     xr-mode-ui="enabled: true"
-    webxr="optionalFeatures: hit-test;">
+    webxr="optionalFeatures: hit-test;"
+    style="display: none;">
     
     <!-- Camera and UI -->
     <a-entity camera>
-      <!-- Background Panel -->
       <a-plane
         position="0 0 -2"
         width="2.5"
@@ -29,19 +46,17 @@
         material="transparent:true">
       </a-plane>
 
-      <!-- Aisle Header -->
       <a-entity id="aisleText"
         text="value: AISLE 8; align: center; color: #F6CF3F; width: 2;"
         position="0 0.25 -2">
       </a-entity>
 
-      <!-- Items List -->
       <a-entity id="itemsText"
         text="value: 1. Primers\n2. Interior Paints\n3. Exterior Paints; align: center; color: white; width: 1.8;"
         position="0 -0.1 -2">
       </a-entity>
     </a-entity>
-
+    
   </a-scene>
 
   <script>
@@ -49,6 +64,14 @@
     const urlParams = new URLSearchParams(window.location.search);
     const aisle = urlParams.get('aisle') || 'Unknown';
     document.querySelector('#aisleText').setAttribute('text', 'value', 'AISLE ' + aisle);
+
+    // Start AR on user interaction
+    const startBtn = document.getElementById('startBtn');
+    const scene = document.querySelector('a-scene');
+    startBtn.addEventListener('click', () => {
+      startBtn.style.display = 'none';
+      scene.style.display = 'block';
+    });
   </script>
 </body>
 </html>
