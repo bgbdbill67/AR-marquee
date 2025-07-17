@@ -60,17 +60,21 @@
   </a-scene>
 
   <script>
-    // Dynamic Aisle Number from URL
     const urlParams = new URLSearchParams(window.location.search);
     const aisle = urlParams.get('aisle') || 'Unknown';
     document.querySelector('#aisleText').setAttribute('text', 'value', 'AISLE ' + aisle);
 
-    // Start AR on user interaction
     const startBtn = document.getElementById('startBtn');
     const scene = document.querySelector('a-scene');
-    startBtn.addEventListener('click', () => {
+
+    startBtn.addEventListener('click', async () => {
       startBtn.style.display = 'none';
       scene.style.display = 'block';
+
+      // Wait for scene to load then enter AR
+      scene.addEventListener('loaded', () => {
+        scene.enterVR(); // Forces AR mode (A-Frame treats AR as VR session)
+      });
     });
   </script>
 </body>
