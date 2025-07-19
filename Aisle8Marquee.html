@@ -1,81 +1,89 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>AR Aisle Marquee</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+  <title>WebAR Lite – Lowe's Aisle Marquee</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
   <style>
-    body { margin: 0; overflow: hidden; }
-    #startBtn {
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { width: 100%; height: 100%; overflow: hidden; background: black; position: relative; }
+
+    #cameraContainer {
+      position: fixed; top: 0; left: 0;
+      width: 100%; height: 100%; z-index: 0;
+    }
+    #cameraFeed {
+      width: 100%; height: 100%; object-fit: cover;
+    }
+
+    .marquee {
+      position: fixed;
+      top: 30%; left: 50%;
+      transform: translateX(-50%);
+      z-index: 10;
+    }
+
+    .marquee-shape {
+      position: relative;
+      width: 300px;
+      height: 160px;
+      background-color: rgba(0,117,206,0.75);
+      clip-path: polygon(
+        0% 100%, 0% 40%, 30% 40%, 45% 20%, 55% 20%, 70% 40%, 100% 40%, 100% 100%
+      );
+    }
+
+    .marquee-text {
       position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      padding: 15px 25px;
-      background: #0075CE;
+      top: 20px;
+      width: 100%;
+      text-align: center;
+      font-family: Arial, sans-serif;
+    }
+    .marquee-text .aisle {
+      font-size: 1.8em;
       color: #F6CF3F;
-      font-size: 1.2em;
       font-weight: bold;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      z-index: 999;
+      margin-bottom: 12px;
+    }
+    .marquee-text .item {
+      font-size: 1.2em;
+      color: white;
+      margin: 4px 0;
     }
   </style>
 </head>
 <body>
-  <button id="startBtn">Start AR Experience</button>
-  
-  <a-scene
-    embedded
-    vr-mode-ui="enabled: false"
-    renderer="antialias: true;"
-    device-orientation-permission-ui="enabled: true"
-    xr-mode-ui="enabled: true"
-    webxr="optionalFeatures: hit-test;"
-    style="display: none;">
-    
-    <!-- Camera and UI -->
-    <a-entity camera>
-      <a-plane
-        position="0 0 -2"
-        width="2.5"
-        height="0.8"
-        color="#0075CE"
-        opacity="0.75"
-        material="transparent:true">
-      </a-plane>
 
-      <a-entity id="aisleText"
-        text="value: AISLE 8; align: center; color: #F6CF3F; width: 2;"
-        position="0 0.25 -2">
-      </a-entity>
+  <div id="cameraContainer">
+    <video id="cameraFeed" autoplay playsinline muted></video>
+  </div>
 
-      <a-entity id="itemsText"
-        text="value: 1. Primers\n2. Interior Paints\n3. Exterior Paints; align: center; color: white; width: 1.8;"
-        position="0 -0.1 -2">
-      </a-entity>
-    </a-entity>
-    
-  </a-scene>
+  <div class="marquee">
+    <div class="marquee-shape">
+      <div class="marquee-text">
+        <div class="aisle" id="aisleText">AISLE X</div>
+        <div class="item">1. Primers</div>
+        <div class="item">2. Interior Paints</div>
+        <div class="item">3. Exterior Paints</div>
+      </div>
+    </div>
+  </div>
 
   <script>
+    // Grab aisle value from URL
     const urlParams = new URLSearchParams(window.location.search);
-    const aisle = urlParams.get('aisle') || 'Unknown';
-    document.querySelector('#aisleText').setAttribute('text', 'value', 'AISLE ' + aisle);
+    const aisle = urlParams.get('aisle') || 'X';
+    document.getElementById('aisleText').innerText = 'AISLE ' + aisle;
 
-    const startBtn = document.getElementById('startBtn');
-    const scene = document.querySelector('a-scene');
-
-    startBtn.addEventListener('click', async () => {
-      startBtn.style.display = 'none';
-      scene.style.display = 'block';
-
-      // Wait for scene to load then enter AR
-      scene.addEventListener('loaded', () => {
-        scene.enterVR(); // Forces AR mode (A-Frame treats AR as VR session)
+    // Initialize camera feed
+    const video = document.getElementById('cameraFeed');
+    navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } })
+      .then(stream => video.srcObject = stream)
+      .catch(err => {
+        console.error("Camera access failed:", err);
+        alert("Please allow camera access.");
       });
-    });
   </script>
+
 </body>
 </html>
