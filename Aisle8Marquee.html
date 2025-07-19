@@ -27,7 +27,7 @@
 
     .marquee {
       position: fixed;
-      top: 30%;
+      top: 32%;
       left: 50%;
       transform: translateX(-50%);
       z-index: 10;
@@ -37,12 +37,12 @@
     .marquee-shape {
       position: relative;
       width: 300px;
-      height: 170px;
+      height: 180px;
       background-color: rgba(0, 117, 206, 0.85);
       clip-path: polygon(
-        0% 100%, 0% 40%, 30% 40%, 45% 20%, 55% 20%, 70% 40%, 100% 40%, 100% 100%
+        0% 100%, 0% 40%, 30% 40%, 45% 15%, 55% 15%, 70% 40%, 100% 40%, 100% 100%
       );
-      box-shadow: 0 0 20px rgba(0, 117, 206, 0.8); /* neon blue glow */
+      box-shadow: 0 0 25px rgba(0, 117, 206, 1);
     }
 
     @keyframes floaty {
@@ -52,16 +52,28 @@
 
     .marquee-text {
       position: absolute;
-      top: 50px;
+      top: 60px; /* shifted further down */
       width: 100%;
       text-align: center;
     }
 
-    .aisle {
-      font-size: 1.8em;
+    .aisle-number {
+      position: absolute;
+      top: 10px;
+      width: 100%;
+      text-align: center;
+      font-size: 2.5em;
+      font-weight: bold;
+      color: #F6CF3F;
+      text-shadow: 0 0 8px rgba(255, 229, 100, 0.7);
+    }
+
+    .aisle-label {
+      font-size: 1.2em;
       font-weight: bold;
       color: #F6CF3F;
       margin-bottom: 10px;
+      text-shadow: 0 0 4px rgba(255, 229, 100, 0.5);
     }
 
     .item-pair {
@@ -70,11 +82,13 @@
       color: white;
       font-size: 1.1em;
       margin-bottom: 5px;
+      text-shadow: 0 0 6px rgba(255,255,255,0.4);
     }
 
     .item-center {
       color: white;
       font-size: 1.1em;
+      text-shadow: 0 0 6px rgba(255,255,255,0.4);
     }
   </style>
 </head>
@@ -86,8 +100,9 @@
 
   <div class="marquee">
     <div class="marquee-shape">
+      <div class="aisle-number" id="aisleNumber">8</div>
       <div class="marquee-text">
-        <div class="aisle" id="aisleText">AISLE X</div>
+        <div class="aisle-label">AISLE</div>
         <div class="item-pair">
           <div>1. Primers</div>
           <div>2. Interior Paints</div>
@@ -100,15 +115,7 @@
   <script>
     const urlParams = new URLSearchParams(window.location.search);
     const aisle = urlParams.get('aisle') || 'X';
-    document.getElementById('aisleText').innerText = 'AISLE ' + aisle;
-
-    const video = document.getElementById('cameraFeed');
-    navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } })
-      .then(stream => video.srcObject = stream)
-      .catch(err => {
-        console.error("Camera access failed:", err);
-        alert("Please allow camera access.");
-      });
+    document.getElementById('aisleNumber').innerText = aisle;
   </script>
 
 </body>
