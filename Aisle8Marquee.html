@@ -52,7 +52,7 @@
 
     .marquee-text {
       position: absolute;
-      top: 60px; /* shifted further down */
+      top: 60px;
       width: 100%;
       text-align: center;
     }
@@ -100,7 +100,7 @@
 
   <div class="marquee">
     <div class="marquee-shape">
-      <div class="aisle-number" id="aisleNumber">8</div>
+      <div class="aisle-number" id="aisleNumber">X</div>
       <div class="marquee-text">
         <div class="aisle-label">AISLE</div>
         <div class="item-pair">
@@ -116,6 +116,15 @@
     const urlParams = new URLSearchParams(window.location.search);
     const aisle = urlParams.get('aisle') || 'X';
     document.getElementById('aisleNumber').innerText = aisle;
+
+    // 🎥 Re-enable camera feed
+    const video = document.getElementById('cameraFeed');
+    navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } })
+      .then(stream => video.srcObject = stream)
+      .catch(err => {
+        console.error("Camera access failed:", err);
+        alert("Please allow camera access to see AR overlay.");
+      });
   </script>
 
 </body>
